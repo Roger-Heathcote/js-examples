@@ -149,3 +149,19 @@ test("Test POST route description" , t => {
     });
 });
 
+// Receive POST data
+// Receive POST data
+// Receive POST data
+
+let data = "";
+req.on("data", dat=>data+=dat);
+req.on("error", console.error);
+req.on("end", _ =>{
+    if(data.length){
+        // Do something with data
+        res.writeHead(200, {"content-type": "application/json" });
+        res.end(JSON.stringify(data));
+    } else {
+        res.writeHead(302, {"location": "/blog" });
+        res.end(JSON.stringify({"location": "/blog" }));
+    }
