@@ -406,3 +406,15 @@ button.addEventListener("click", () => {
   const output = document.querySelector("output");
   output.textContent = "You checked: " + checked.id;
 })
+
+
+// Handling uncaught promise rejections in Node
+// Handling uncaught promise rejections in Node
+// Handling uncaught promise rejections in Node
+
+// in server.js
+process.on("unhandledRejection", error => {
+  console.error(error);
+  process.exit(1);
+});
+
