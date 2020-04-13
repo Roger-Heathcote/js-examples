@@ -53,9 +53,9 @@ function router(request, response) {
 module.exports = router;
 
 
-// Public file server route
-// Public file server route
-// Public file server route
+// Public file server handler
+// Public file server handler
+// Public file server handler
 
 const fs = require("fs");
 const path = require("path");
@@ -417,4 +417,163 @@ process.on("unhandledRejection", error => {
   console.error(error);
   process.exit(1);
 });
+
+// Checking requset method in router
+// Checking requset method in router
+// Checking requset method in router
+
+ } else if (req.url === "/blog" && req.method === "GET" ) {
+     
+
+     
+// Sign up with bcrypt
+// Sign up with bcrypt
+// Sign up with bcrypt
+
+Run npm install bcryptjs to install the library
+Use bcrypt.genSalt() and bcrypt.hash() to hash your password before saving to the DB in signUp.js
+Use bcrypt.compare() to compare the saved and submitted passwords in logIn.js
+     
+//signUp.js with bcrypt
+//signUp.js with bcrypt
+//signUp.js with bcrypt
+
+const bcrypt = require("bcryptjs");
+
+function post(request, response) {
+  getBody(request)
+    .then(body => {
+      const user = new URLSearchParams(body);
+      const email = user.get("email");
+      const password = user.get("password");
++     bcrypt
++       .genSalt(10)
++       .then(salt => bcrypt.hash(password, salt))
++       .then(hash => model.createUser({ email, password: hash }))
+        .then(() => {
+          response.writeHead(200, { "content-type": "text/html" });
+          response.end(`
+            <h1>Thanks for signing up, ${email}</h1>
+          `);
+        })
+        // .
+
+        
+// Log in with bcrypt
+// Log in with bcrypt
+// Log in with bcrypt
+
+const bcrypt = require("bcryptjs");
+
+function post(request, response) {
+  getBody(request)
+    .then(body => {
+      const user = new URLSearchParams(body);
+      const email = user.get("email");
+      const password = user.get("password");
+      model
+        .getUser(email)
++       .then(dbUser => bcrypt.compare(password, dbUser.password))
++       .then(match => {
++         if (!match) throw new Error("Password mismatch");
+          response.writeHead(200, { "content-type": "text/html" });
+          response.end(`
+            <h1>Welcome back, ${email}</h1>
+          `);
+        })
+        // ...
+
+
+// Cookies
+// Cookies
+// Cookies
+
+res.setHeader('Set-Cookie', 'logged_in=true; HttpOnly; Max-Age=9000');
+// OR
+res.writeHead(200, { 'Set-Cookie': 'logged_in=true; HttpOnly; Max-Age=9000' });
+// OR multiple
+res.writeHead(200, { 'Set-Cookie': ['logged_in=true;', 'cat=persian; Secure'] });
+
+// HttpOnly - prevent js from accessing cookie
+// Secure - Only set over a HTTPS connection. Prevents MITM
+// Max-Age	This sets the cookie lifetime in seconds.
+
+// Reading cookie server side
+req.headers.cookie; // 'logged_in=true'
+
+// Delting a cookie
+res.setHeader('Set-Cookie', 'logged_in=blah; Max-Age=0');
+
+
+
+
+// Creating a JWT in node
+// Creating a JWT in node
+// Creating a JWT in node
+
+const jwt = require('jsonwebtoken');
+const secret = process.env.SECRET;
+
+claims = {
+  one: 123,
+  two: "456",
+  three: { 7: "89" }
+}
+const cookie = jwt.sign(claims, secret);
+response.writeHead(
+  302, {
+      'Location': '/',
+      'Set-Cookie': `wevs=${cookie}; HttpOnly; Max-Age=20000`
+  });
+return response.end()
+
+
+// Creating auth middleware to decode jwt in express for node
+// Creating auth middleware to decode jwt in express for node
+// Creating auth middleware to decode jwt in express for node
+
+const cookieParser = require("cookie-parser");
+server.use(cookieParser());
+
+function authUser(req, res, next) {
+  if(req.cookies.user) {
+    try {
+        req.user = jwt.verify(req.cookies.user, SECRET);
+    }
+    catch(err) {
+        console.log("Bad token dude!", err);
+    }
+  }
+  next();
+}
+
+server.use(authUser);
+
+// Detecting if you're running in production or testing
+// Detecting if you're running in production or testing
+// Detecting if you're running in production or testing
+
+if(!process.env.NODE_ENV) {
+  console.log("ERROR IN DEVELOPMENT");
+  res.status(status).send(`<h1>${error.stack}</h1>`);
+
+
+// Misc express.js methods
+// Misc express.js methods
+// Misc express.js methods
+
+const cookieParser = require("cookie-parser");
+server.use(express.urlencoded());
+server.use(cookieParser());
+
+res.cookie("user", token, { maxAge: 600000 });
+res.clearCookie("user");
+res.redirect("/profile");
+res.status(401).send(`<h1>You need to login dude! <a href="/log-in">Login Page</a></h1>`);
+
+function randomMiddleware(req, res, next) {
+  console.log("Farts");
+  next();
+}
+server.use(randomMiddleware);
 
