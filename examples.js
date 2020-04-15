@@ -549,9 +549,9 @@ function authUser(req, res, next) {
 
 server.use(authUser);
 
-// Detecting if you're running in production or testing
-// Detecting if you're running in production or testing
-// Detecting if you're running in production or testing
+// Detecting if you're running in production or development
+// Detecting if you're running in production or development
+// Detecting if you're running in production or development
 
 if(!process.env.NODE_ENV) {
   console.log("ERROR IN DEVELOPMENT");
@@ -577,3 +577,41 @@ function randomMiddleware(req, res, next) {
 }
 server.use(randomMiddleware);
 
+
+// DB model tests
+// DB model tests
+// DB model tests
+
+test("Check if getListing takes account of search term", t => {
+  build().then( () => {
+      let searchTerms = { search: "loads" };
+      model.getListings(searchTerms).then( listings => {
+          t.equal( listings.length, 2, "Exactly two listings returned" );
+          t.equal( listings[0].id, 2, "First one has id 2" );
+          t.equal( listings[0].title, "Loads of canned peas", "Post concerns peas" );
+          t.equal( listings[1].id, 1, "Second has id 1" );
+          t.equal( listings[1].username, "joe653", "Was posted by joe653" );
+          t.end();
+      })  
+      .catch( err => {  console.log("SOMETHING'S UP!!!\n", err);   });
+  })
+});
+
+
+// More DB model testing
+// More DB model testing
+// More DB model testing
+
+test("Check if delete(1) deletes the correct thing!", t => {
+  build().then( () => {
+      model.deleteListing(1).then( () => {
+          model.getOnlyPostsTable().then ( results => {
+              t.equal( results.length, 3, "There should be only 3 results");
+              results.forEach( item => { 
+                  t.notEqual( item.id, 1, `ID ${item.id} not equal to 1`);
+              });
+              t.end();
+          })
+      })
+  })
+})
