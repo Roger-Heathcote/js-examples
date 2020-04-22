@@ -19,6 +19,45 @@ function fetchSomething(searchString, callback, errorHandler){
     .catch(errorHandler);    // we need to do something with any errors objects we get
 }
 
+// Fetch helper - query
+// Fetch helper - query
+// Fetch helper - query
+
+function query(url, options) {
+  return fetch(url, options).then((res) => {
+    if (!res.ok) {
+      const error = new Error("HTTP Error");
+      error.status = res.status;
+      throw error;
+    }
+    const contentType = res.headers.get("content-type");
+    if (contentType && contentType.includes("json")) {
+      return res.json();
+    } else {
+      return res.text();
+    }
+  });
+}
+
+export default query;
+
+// Client fetch with POST
+// Client fetch with POST
+// Client fetch with POST
+
+fetch("https://fac-dogs.herokuapp.com/v1/users",
+    {
+        "headers" : { "content-type": "application/json" }, 
+        "body": JSON.stringify(yourObjectWotYouWantedPosting),
+        "method": "POST" 
+    })
+    .then( dieIfResponeCodeNot200 )
+    .then( decodeJSONOrDieTrying )
+    .then( result => {
+        console.log("The thing we wanted:", result.whatever );
+    })
+    .catch( err => console.error(`Bumflaps! there was an error: ${err.message}`)
+
 
 // Server in vanilla node.js
 // Server in vanilla node.js
@@ -149,9 +188,9 @@ test("Test POST route description" , t => {
     });
 });
 
-// Receive POST data
-// Receive POST data
-// Receive POST data
+// Receive POST data in vanilla node
+// Receive POST data in vanilla node
+// Receive POST data in vanilla node
 
 let data = "";
 req.on("data", dat=>data+=dat);
@@ -194,9 +233,9 @@ GRANT ALL ON SEQUENCE users_id_seq TO myuser;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO myuser;
 
 
-// package.json
-// package.json
-// package.json
+// package.json scripts
+// package.json scripts
+// package.json scripts
 
   "scripts": {
     "dev": "nodemon workshop/server.js",
@@ -225,9 +264,9 @@ dotenv.config(); // load environment variables
 const db = new pg.Pool(); // create a pool of available connections
 module.exports = db; // export the pool for use elsewhere on our server
 
-// /database/init.sql
-// /database/init.sql
-// /database/init.sql
+// example sql table definition / init.sql
+// example sql table definition / init.sql
+// example sql table definition / init.sql
 
 BEGIN;
 
@@ -248,17 +287,11 @@ CREATE TABLE blog_posts (
 
 INSERT INTO users (username, age, location) VALUES
   ('Sery1976', 28, 'Middlehill, UK'),
-  ('Notne1991', 36, 'Sunipol, UK'),
-  ('Moull1990', 41, 'Wanlip, UK'),
-  ('Spont1935', 72, 'Saxilby, UK'),
   ('Precand', 19, 'Stanton, UK')
 ;
 
 INSERT INTO blog_posts (text_content, user_id) VALUES
   ('Announcing of invitation principles in.', 1),
-  ('Peculiar trifling absolute and wandered yet.', 2),
-  ('Far stairs now coming bed oppose hunted become his.', 3),
-  ('Curabitur arcu quam, imperdiet ac orci ac.', 4),
   ('Aenean blandit risus sed pellentesque.', 5)
 ;
 
@@ -615,3 +648,47 @@ test("Check if delete(1) deletes the correct thing!", t => {
       })
   })
 })
+
+// Raw DOM Rendering helper function / module
+// Raw DOM Rendering helper function / module
+// Raw DOM Rendering helper function / module
+
+function html(tag, props, ...children){
+    const element = document.createElement(tag);
+    const elementWithProps = Object.assign(element, props);
+    elementWithProps.append(...children);
+    return elementWithProps;
+}
+
+export default h;
+
+// use
+
+const container = document.getElementById("app");
+const header = html("h1", {}, "Here are some dogs...");
+const dogElements = dogs.map((dog) =>{
+    const name = html("h3", {}, dog.name);
+    const pic = html("img", { src: dog.image} );
+    const li = html("li", {}, name, pic);
+    return li;
+});
+const list = html("ul", {}, ...dogElements);
+container.append(header, list);
+
+// HTML data attribute
+// HTML data attribute
+// HTML data attribute
+
+<a href="https://example.com" data-wevs="abc">Wevs</a>
+
+function handleClick(event) {
+    console.log( event.target.dataset.wevs )
+    console.log( "wevs" in event.target.dataset )
+}
+
+// Getting ALL form fields
+// Getting ALL form fields
+// Getting ALL form fields
+
+const formData = new FormData(event.target);
+const formObject = Object.fromEntries(formData);
