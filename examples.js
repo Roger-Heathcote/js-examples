@@ -1,6 +1,7 @@
-// Client fetch
-// Client fetch
-// Client fetch
+// Client fetch with GET
+// Client fetch with GET
+// Client fetch with GET
+js
 
 function dieIfBadResponse(response) {
     if (!response.ok) throw new Error("Response not OK");
@@ -22,6 +23,7 @@ function fetchSomething(searchString, callback, errorHandler){
 // Fetch helper - query
 // Fetch helper - query
 // Fetch helper - query
+js
 
 function query(url, options) {
   return fetch(url, options).then((res) => {
@@ -44,6 +46,7 @@ export default query;
 // Client fetch with POST
 // Client fetch with POST
 // Client fetch with POST
+js
 
 fetch("https://fac-dogs.herokuapp.com/v1/users",
     {
@@ -62,6 +65,7 @@ fetch("https://fac-dogs.herokuapp.com/v1/users",
 // Server in vanilla node.js
 // Server in vanilla node.js
 // Server in vanilla node.js
+js
 
 const http = require("http");
 const router = require("./router");
@@ -73,6 +77,7 @@ server.listen(port, () => console.log(`Listening at ${port}`));
 // Router function in vanilla Node.js
 // Router function in vanilla Node.js
 // Router function in vanilla Node.js
+js
 
 const homeHandler = require("./handlers/home");
 const publicHandler = require("./handlers/public");
@@ -95,6 +100,7 @@ module.exports = router;
 // Public file server handler
 // Public file server handler
 // Public file server handler
+js
 
 const fs = require("fs");
 const path = require("path");
@@ -125,9 +131,20 @@ function publicHandler(request, response) {
 
 module.exports = publicHandler;
 
+// HTML Templates
+html
+
+<template id="template">
+  <li class="item">
+    <input class="item__text"> type="text"</input>
+    <input class="item__checkbox" type="checkbox" value="wevs"></input>
+  </li>  
+</template>
+
 // Template cloning and populating
 // Template cloning and populating
 // Template cloning and populating
+js
 
 function addItem(text, checkBox){    
     let template = document.getElementById('template');
@@ -142,6 +159,7 @@ function addItem(text, checkBox){
 // Get ancestor container
 // Get ancestor container
 // Get ancestor container
+js
 
 function getAncestorIfItHasClass(elem, className){
     // Takes a DOM node (typically from event.target) and recursively checks up the
@@ -150,13 +168,10 @@ function getAncestorIfItHasClass(elem, className){
     if(elem.parentElement) return getAncestorIfItHasClass(elem.parentElement, className);
 }
 
-// Running tests with supertest
-// Running tests with supertest
-// Running tests with supertest
-
-// GET
-// GET
-// GET
+// Running GET tests with supertest
+// Running GET tests with supertest
+// Running GET tests with supertest
+js
 
 test("Test GET route description", t => {
     supertest(router)
@@ -170,9 +185,10 @@ test("Test GET route description", t => {
     });
 });
 
-// POST
-// POST
-// POST
+// Running POST tests with supertest
+// Running POST tests with supertest
+// Running POST tests with supertest
+js
 
 test("Test POST route description" , t => {
     supertest(router)
@@ -191,6 +207,7 @@ test("Test POST route description" , t => {
 // Receive POST data in vanilla node
 // Receive POST data in vanilla node
 // Receive POST data in vanilla node
+js
 
 let data = "";
 req.on("data", dat=>data+=dat);
@@ -209,6 +226,7 @@ req.on("end", _ =>{
 // EXAMPLE SQL QUERIES
 // EXAMPLE SQL QUERIES
 // EXAMPLE SQL QUERIES
+sql
 
 SELECT first_name FROM users;
 SELECT first_name FROM users WHERE id = 1;
@@ -236,6 +254,7 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO myuser;
 // package.json scripts
 // package.json scripts
 // package.json scripts
+json
 
   "scripts": {
     "dev": "nodemon workshop/server.js",
@@ -245,7 +264,8 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO myuser;
 // /database/build
 // /database/build
 // /database/build
-    
+js
+
 const fs = require("fs");
 const path = require("path");
 const db = require("./connection");
@@ -257,6 +277,7 @@ module.exports = build;
 // /database/connection.js
 // /database/connection.js
 // /database/connection.js
+js
 
 const pg = require("pg");
 const dotenv = require("dotenv");
@@ -267,6 +288,7 @@ module.exports = db; // export the pool for use elsewhere on our server
 // example sql table definition / init.sql
 // example sql table definition / init.sql
 // example sql table definition / init.sql
+sql
 
 BEGIN;
 
@@ -298,9 +320,10 @@ INSERT INTO blog_posts (text_content, user_id) VALUES
 COMMIT;
 
 
-// /tests/model.test.js
-// /tests/model.test.js
-// /tests/model.test.js
+// Database testing with tape
+// Database testing with tape
+// Database testing with tape
+js
 
 const test = require("tape");
 const build = require("../database/build");
@@ -340,13 +363,10 @@ test("Can create a new user", t => {
       });
 });
 
-
-
-
-
-// /tests/zzz.test.js  -  Stop the 10s timeout at the end of db tests
-// /tests/zzz.test.js  -  Stop the 10s timeout at the end of db tests
-// /tests/zzz.test.js  -  Stop the 10s timeout at the end of db tests
+// zzz.test.js  -  Stop the 10s timeout at the end of db tests
+// zzz.test.js  -  Stop the 10s timeout at the end of db tests
+// zzz.test.js  -  Stop the 10s timeout at the end of db tests
+js
 
 const test = require("tape");
 const db = require("../database/connection");
@@ -357,82 +377,10 @@ test("Dummy test, just want to close db connection!", t => {
 });
 
 
-// Handlers - all in one file with database access
-// Handlers - all in one file with database access
-// Handlers - all in one file with database access
-
-const db = require("./database/connection");
-const model = require("./model");
-
-function home(request, response) {
-  model.getUsers().then(users => {
-    // const users = result.rows;
-    // create a list item for each user in the array
-    const userList = users.map(user => `<li>${user.username}</li>`);
-    response.writeHead(200, { "content-type": "text/html" });
-    // use .join to turn the array into a string
-    response.end(`<ul>${userList.join("")}</ul>`);
-  });
-}
-
-function newUser(request, response) {
-  response.writeHead(200, { "content-type": "text/html" });
-  response.end(`
-    <form action="create-user" method="POST">
-      <label for="username">Username</label>
-      <input id="username" name="username">
-      <label for="age">Age</label>
-      <input id="age" name="age" type="number">
-      <label for="location">Location</label>
-      <input id="location" name="location">
-      <button type="submit">Create user</button>
-    </form>
-  `);
-}
-
-function createUser(request, response) {
-  let body = "";
-  request.on("data", chunk => (body += chunk));
-  request.on("end", () => {
-    const searchParams = new URLSearchParams(body);
-    const data = Object.fromEntries(searchParams);
-    // const values = [data.username, data.age, data.location];
-    model.createUser(data)
-      .then(() => {
-        response.writeHead(302, { location: "/" });
-        response.end();
-      })
-      .catch(error => {
-        console.log("THERE WAS AN ERROR!!!", error);
-        response.writeHead(500, { "content-type": "text/html" });
-        response.end(`<h1>Something went wrong saving your data</h1>`, error);
-      });
-  });
-}
-
-function allPosts(request, response) {
-  model.allPosts()
-  .then(posts => {
-    // const posts = result.rows;
-    const postsList = posts.map(
-      post => `
-      <li>
-        <p>${post.text_content}</p>
-        <div>${post.username}</p>
-      </li>
-    `
-    );
-    response.writeHead(200, { "content-type": "text/html" });
-    response.end(`<ul>${postsList.join("")}</ul>`);
-  });
-}
-
-module.exports = { home, newUser, createUser, allPosts };
-
-
 // Getting which radio button is selected
 // Getting which radio button is selected
 // Getting which radio button is selected
+js
 
 button.addEventListener("click", () => {
   const checked = document.querySelector("[type='radio']:checked")
@@ -444,6 +392,7 @@ button.addEventListener("click", () => {
 // Handling uncaught promise rejections in Node
 // Handling uncaught promise rejections in Node
 // Handling uncaught promise rejections in Node
+js
 
 // in server.js
 process.on("unhandledRejection", error => {
@@ -454,22 +403,17 @@ process.on("unhandledRejection", error => {
 // Checking requset method in router
 // Checking requset method in router
 // Checking requset method in router
+js
 
  } else if (req.url === "/blog" && req.method === "GET" ) {
      
-
      
-// Sign up with bcrypt
-// Sign up with bcrypt
-// Sign up with bcrypt
+// signUp.js with bcrypt
+// signUp.js with bcrypt
+// signUp.js with bcrypt
+js
 
-Run npm install bcryptjs to install the library
-Use bcrypt.genSalt() and bcrypt.hash() to hash your password before saving to the DB in signUp.js
-Use bcrypt.compare() to compare the saved and submitted passwords in logIn.js
-     
-//signUp.js with bcrypt
-//signUp.js with bcrypt
-//signUp.js with bcrypt
+// Run npm install bcryptjs to install the library
 
 const bcrypt = require("bcryptjs");
 
@@ -495,6 +439,7 @@ function post(request, response) {
 // Log in with bcrypt
 // Log in with bcrypt
 // Log in with bcrypt
+js
 
 const bcrypt = require("bcryptjs");
 
@@ -517,9 +462,10 @@ function post(request, response) {
         // ...
 
 
-// Cookies
-// Cookies
-// Cookies
+// Cookies in raw node
+// Cookies in raw node
+// Cookies in raw node
+js
 
 res.setHeader('Set-Cookie', 'logged_in=true; HttpOnly; Max-Age=9000');
 // OR
@@ -538,11 +484,10 @@ req.headers.cookie; // 'logged_in=true'
 res.setHeader('Set-Cookie', 'logged_in=blah; Max-Age=0');
 
 
-
-
 // Creating a JWT in node
 // Creating a JWT in node
 // Creating a JWT in node
+js
 
 const jwt = require('jsonwebtoken');
 const secret = process.env.SECRET;
@@ -564,6 +509,7 @@ return response.end()
 // Creating auth middleware to decode jwt in express for node
 // Creating auth middleware to decode jwt in express for node
 // Creating auth middleware to decode jwt in express for node
+js
 
 const cookieParser = require("cookie-parser");
 server.use(cookieParser());
@@ -585,6 +531,7 @@ server.use(authUser);
 // Detecting if you're running in production or development
 // Detecting if you're running in production or development
 // Detecting if you're running in production or development
+node
 
 if(!process.env.NODE_ENV) {
   console.log("ERROR IN DEVELOPMENT");
@@ -594,6 +541,7 @@ if(!process.env.NODE_ENV) {
 // Misc express.js methods
 // Misc express.js methods
 // Misc express.js methods
+js
 
 const cookieParser = require("cookie-parser");
 server.use(express.urlencoded());
@@ -614,6 +562,7 @@ server.use(randomMiddleware);
 // DB model tests
 // DB model tests
 // DB model tests
+js
 
 test("Check if getListing takes account of search term", t => {
   build().then( () => {
@@ -634,6 +583,7 @@ test("Check if getListing takes account of search term", t => {
 // More DB model testing
 // More DB model testing
 // More DB model testing
+js
 
 test("Check if delete(1) deletes the correct thing!", t => {
   build().then( () => {
@@ -652,6 +602,7 @@ test("Check if delete(1) deletes the correct thing!", t => {
 // Raw DOM Rendering helper function / module
 // Raw DOM Rendering helper function / module
 // Raw DOM Rendering helper function / module
+js
 
 function html(tag, props, ...children){
     const element = document.createElement(tag);
@@ -678,6 +629,7 @@ container.append(header, list);
 // HTML data attribute
 // HTML data attribute
 // HTML data attribute
+html
 
 <a href="https://example.com" data-wevs="abc">Wevs</a>
 
@@ -689,6 +641,321 @@ function handleClick(event) {
 // Getting ALL form fields
 // Getting ALL form fields
 // Getting ALL form fields
+js
 
 const formData = new FormData(event.target);
 const formObject = Object.fromEntries(formData);
+
+// Make a links clickable area as big as its parent wit a pseudo class
+// Make a links clickable area as big as its parent wit a pseudo class
+// Make a links clickable area as big as its parent wit a pseudo class
+css
+
+.task-five .card {
+    position: relative;
+}
+.task-five .card a:after{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+// ES6 Modules
+// ES6 Modules
+// ES6 Modules
+
+// Default
+export default add;
+import add from "./maths.js"; // .js mandatory for localfiles
+
+// Named
+export {add, sub, div, mul};
+import { add } from "./maths.js"; // .js mandatory for localfiles
+
+// Hand rolled client side SPA router
+// Hand rolled client side SPA router
+// Hand rolled client side SPA router
+
+function router() {
+    let routes = {};
+
+    function get(path, callback) {
+        routes[path] = callback;
+    }
+
+    function setDefault(callback) {
+        routes.default = callback
+    }
+
+    function redirect(path) {
+        const url = window.location.origin + path;
+        window.history.pushState(null, null, url);
+        navigate(url);
+    }
+
+    function handleClick(event) {
+        if (
+          "external" in event.target.dataset ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.shiftKey ||
+          event.altKey ||
+          event.ctrlKey
+        )
+          return;
+        if (event.target.tagName === "A") {
+          event.preventDefault();
+          window.history.pushState(null, null, event.target.href);
+          navigate(event.target.href);
+        }
+      }
+
+    function navigate(url) {
+        const parsedUrl = new URL(url);
+        const basePath = parsedUrl.pathname.split("?")[0];
+        const callback = routes[basePath] || routes.default;
+        callback({url: parsedUrl, redirect});
+    }
+
+    function redirect(path) {
+        const url = window.location.origin + path;
+        window.history.pushState(null, null, url);
+        navigate(url);
+    }
+
+
+    function handlePop() {
+        navigate(window.location);
+    }
+
+    function listen() {
+        window.addEventListener("click", handleClick);
+        window.addEventListener("popstate", handlePop);
+        console.log(window.location);
+        navigate(window.location);
+    }
+
+    function close() {
+        window.removeEventListener("click", handleClick);
+        window.removeEventListener("popstate", handlePop);
+    }
+
+    return {get, listen, close, setDefault};
+}
+export default router;
+
+
+// Local storage
+// Local storage
+// Local storage
+
+localStorage.setItem("user-id", result.user_id);
+const token = localStorage.getItem("access-token");
+
+// Defining and importing a React component with a controlled input
+// Defining and importing a React component with a controlled input
+// Defining and importing a React component with a controlled input
+
+in file "Component.js"...
+    import React from "react"
+    const Component = (props) => {
+        return (
+            <span>{props.someText}</span>
+            <input
+                value={props.value}
+                onChange={props.inputHandler}>
+            </input>
+        )
+    }
+    export default Component
+
+in file "App.js"...
+    import React from "react"
+    import ReactDOM from "react-dom";
+    import Component from "./Component"
+    function App() {
+      const [inputText, setInputText] = React.useState("default");
+      const handleInputChanges = (event) => setInputText(event.target.value)
+      return (
+        <Component
+          someText="Hello World"
+          inputHandler={ handleInputChanges }
+        />
+      )
+    }
+    ReactDOM.render(<App />, document.getElementById("root"));
+
+
+// React controlled checkbox component...
+// React controlled checkbox component...
+// React controlled checkbox component...
+
+const Form = () => {
+  const [checked, setChecked] = React.useState(false);
+  return (
+    <input
+      type="checkbox"
+      checked={checked}
+      onChange={event => setChecked(event.target.checked)}
+    />
+  );
+};
+
+// React controlled radio buttons
+// React controlled radio buttons
+// React controlled radio buttons
+
+const Form = () => {
+  const [fruit, setFruit] = React.useState("apple");
+  const handleChange = event => setFruit(event.target.value);
+  return (
+    <form>
+      <input
+        type="radio"
+        name="fruit" // name groups the inputs
+        value="apple"
+        checked={fruit === "apple"}
+        onChange={handleChange}
+      />
+      <input
+        type="radio"
+        name="fruit"
+        value="orange"
+        checked={fruit === "orange"}
+        onChange={handleChange}
+      />
+
+
+// React update based on previous state
+// React update based on previous state
+// React update based on previous state
+
+const [count, setCount] = React.useState(7)
+setCount( prev => prev+1 )
+
+// React useEffect to add and remove / cleanup global event listeners
+// React useEffect to add and remove / cleanup global event listeners
+// React useEffect to add and remove / cleanup global event listeners
+react
+
+const Counter = props => {
+  const [count, setCount] = React.useState(0);
+
+  React.useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.key === "ArrowUp") setCount(prevCount => prevCount + 1);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  return <div>Count is {count}</div>;
+};
+
+// React async fetching data
+// React async fetching data
+// React async fetching data
+
+import React from "react";
+const [data, setData] = React.useState(null);
+
+const getData = username => {
+  return fetch(`https://api.github.com/users/${username}?access_token=${token}`)
+    .then(checkResponse)
+    .catch(err => {
+      throw new Error(`fetch getUserData failed ${err}`);
+    });
+};
+React.useEffect( ()=>{
+    getData("wevs").then(data => setData(data));
+}, []);
+
+if (!data) return(null) // Or a loading indicator
+return(
+  <p>{data}<p/>
+)
+
+// React rendering lists of stuff
+// React rendering lists of stuff
+// React rendering lists of stuff
+
+return (
+  <ul>
+    {repos.map(repo => (
+      <Repo key={repo.id} {...repo} /> // don't forget key
+    ))}
+  </ul>
+);
+
+// React testing async code
+// React testing async code
+// React testing async code
+
+test("Async code", () => {
+  // RETURN A PROMISE!!! DO NOT FORGET RETURN
+  return fetch("http://test").then((res) => {
+    expect(res.ok).toBeTruthy();
+  });
+});
+
+// React adding test watcher to package.json
+// React adding test watcher to package.json
+// React adding test watcher to package.json
+
+"test": "jest --watch"
+
+// React jest assertions
+// React jest assertions
+// React jest assertions
+
+expect(x).toBeTruthy();
+expect(x).toBeFalsy();
+expect(x).toEqual(y);
+
+// Testing React components with React Testing Library (RTL) (which includes jsdom)
+// Testing React components with React Testing Library (RTL) (which includes jsdom)
+// Testing React components with React Testing Library (RTL) (which includes jsdom)
+
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import Button from "./Button";
+
+test("The button renders", () => {
+  render(<Button>click me</Button>);
+  const buttonNode = screen.getByText("click me"); // <button>click me</button>;
+  fireEvent.click(buttonNode);
+  screen.getByText("just clicked"); // the same button node with updated text
+  // getByText will fail the test if it can't find an element with matching text
+});
+
+// Mocking out a fetch request / API in React / Jest
+// Mocking out a fetch request / API in React / Jest
+// Mocking out a fetch request / API in React / Jest
+
+const mockResponse = `<h2 id="h2">This is a H2</h2>`
+global.fetch = jest
+  .fn()
+  .mockImplementation(() =>
+    Promise.resolve({ text: () => Promise.resolve(mockResponse) }),
+  )
+
+test('Check component displays right thing', () => {
+  render(<p>Some stuff that triggers a fetch</p>)
+  expect(global.fetch).toHaveBeenCalledTimes(1)
+  return screen.findByText('This is a H2', { selector: 'h2' })
+  </snip>
+})
+
+// Mocking an API server side / node
+// Mocking an API server side / node
+// Mocking an API server side / node
+
+const mocks = nock("https://some-api.com");
+mocks.get("/dogs/123").reply(200, { name: "Pongo" });
+
+// Mocks must match exactly
+// Mocks only work once, need to define for every use
+
