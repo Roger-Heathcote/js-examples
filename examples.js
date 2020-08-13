@@ -470,7 +470,8 @@ js
 res.setHeader('Set-Cookie', 'logged_in=true; HttpOnly; Max-Age=9000');
 // OR
 res.writeHead(200, { 'Set-Cookie': 'logged_in=true; HttpOnly; Max-Age=9000' });
-// OR multiple
+
+Note: To send multiple cookie headers pass in an array of cookie strings
 res.writeHead(200, { 'Set-Cookie': ['logged_in=true;', 'cat=persian; Secure'] });
 
 // HttpOnly - prevent js from accessing cookie
@@ -483,7 +484,12 @@ req.headers.cookie; // 'logged_in=true'
 // Delting a cookie
 res.setHeader('Set-Cookie', 'logged_in=blah; Max-Age=0');
 
-
+// There's also a res.cookie(name, val) that can be called multiple times to add cookies before res.send is called.
+res.cookie("isStillHere" , 'yes it is !');
+res.cookie("IP" , ip);
+res.send('Cookies are set');
+      
+      
 // Creating a JWT in node
 // Creating a JWT in node
 // Creating a JWT in node
